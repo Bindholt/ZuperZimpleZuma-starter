@@ -1,12 +1,10 @@
 import SimpleLinkedList from "./simplelinkedlist.js";
 
-export {init}
-
 const list = new SimpleLinkedList();
 
 function init() {
   console.log("Model init");
-
+  loadCannon();
 }
 
 function dump() {
@@ -23,18 +21,48 @@ function dump() {
 }
 
 // **** WRAPPERS ****
+function getFirstBall() {
+  return list.head;
+}
+
+function getNextBall(ball) {
+  if(!ball) return null;
+  return ball.next;
+}
+
+function getPreviousBall(ball) {
+  if(!ball) return null;
+  return ball.prev;
+}
+
 function addRandomBall() {
-  // TODO: Implement
+  return list.add(randomBall());
 }
 
 function addBall(ball) {
-  // TODO: Implement
+  let newNode = null;
+  if(!!ball) newNode = list.add(ball);
+  return newNode;
+}
+  
+function insertBallAfter(ball, node) {
+  let newNode = null;
+  if(!!ball) newNode = list.insertAfter(ball, node);
+  return newNode;
 }
 
-// TODO: Implement more functions
+function insertBallBefore(ball, node) {
+  let newNode = null;
+  if(!!ball) newNode = list.insertBefore(ball, node);
+  return newNode;
+}
 
 function numberOfBalls() {
-  // TODO: Implement
+  return list.size();
+}
+
+function removeBall(node) {
+  list.remove(node);
 }
 
 // **** CANNON ****
@@ -49,8 +77,31 @@ function getCannonBall() {
 }
 
 // **** MATCHES ****
+function findMatches(node) { 
+  if(!node) return [];
+  const matches = [];
+  let current = node;
 
-// TODO: Implement functions to find and remove matches
+  while(!!current.prev && current.prev.data === node.data) {
+    matches.push(current.prev);
+    current = current.prev;
+  }
+
+  matches.push(node);
+
+  current = node;
+  while(!!current.next && current.next.data === node.data) {
+    matches.push(current.next);
+    current = current.next;
+  }
+
+  return matches;
+}
+
+function removeMatches(matches) {
+  if (matches.length < 3) return;
+  matches.forEach((match) => removeBall(match));
+}
 
 
 // **** BALLS ****
@@ -77,4 +128,5 @@ function green() {
   return balls[3];
 }
 
-debugger;
+
+export { init, dump, addRandomBall, addBall, insertBallAfter, insertBallBefore, findMatches, removeMatches, removeBall, numberOfBalls, loadCannon, getCannonBall, randomBall, red, blue, yellow, green, getFirstBall, getNextBall, getPreviousBall }; 
